@@ -3,6 +3,10 @@ FROM docker:latest
 ARG VCS_REF=master
 ARG BUILD_DATE=unknown
 
+ENV DOCKER_CLI_EXPERIMENTAL=enabled
+
+RUN bash -c 'echo "{\"experimental\": true}" > /etc/docker/daemon.json'
+
 # Metadata
 LABEL org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.name="tf-with-ansible" \
