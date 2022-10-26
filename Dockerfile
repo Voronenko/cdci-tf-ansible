@@ -16,6 +16,11 @@ ENV DOCKER_CLI_EXPERIMENTAL=enabled
 RUN apk add --no-cache py3-pip python3-dev libffi-dev openssl-dev curl gcc libc-dev make rust cargo bash && \
     pip3 install docker-compose awscli ansible==2.9.6
 
+ENV PACKER_ZIP=https://releases.hashicorp.com/packer/1.5.4/packer_1.5.4_linux_amd64.zip
+RUN curl -sSLo /tmp/packer.zip $PACKER_ZIP && \
+    unzip /tmp/packer.zip -d /usr/local/bin && \
+    rm /tmp/packer.zip
+
 RUN mkdir -p /etc/docker
 RUN bash -c 'echo "{\"experimental\": true}" > /etc/docker/daemon.json'
 
