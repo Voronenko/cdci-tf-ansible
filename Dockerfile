@@ -3,10 +3,6 @@ FROM docker:latest
 ARG VCS_REF=master
 ARG BUILD_DATE=unknown
 
-ENV DOCKER_CLI_EXPERIMENTAL=enabled
-
-RUN bash -c 'echo "{\"experimental\": true}" > /etc/docker/daemon.json'
-
 # Metadata
 LABEL org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.name="tf-with-ansible" \
@@ -14,9 +10,13 @@ LABEL org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.vcs-url="https://github.com/Voronenko/cdci-tf-ansible" \
       org.label-schema.build-date=$BUILD_DATE
 
+ENV DOCKER_CLI_EXPERIMENTAL=enabled
+
 # Rust is required by cryptography module, starting 3.3.2.
 RUN apk add --no-cache py3-pip python3-dev libffi-dev openssl-dev curl gcc libc-dev make rust cargo bash && \
     pip3 install docker-compose awscli ansible==2.9.6
+
+RUN bash -c 'echo "{\"experimental\": true}" > /etc/docker/daemon.json'
 
 COPY slacktee /usr/local/bin
 RUN chmod +x /usr/local/bin
