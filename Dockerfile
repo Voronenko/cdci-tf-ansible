@@ -16,6 +16,7 @@ ENV DOCKER_CLI_EXPERIMENTAL=enabled
 RUN apk add --no-cache py3-pip python3-dev libffi-dev openssl-dev curl gcc libc-dev make rust cargo bash && \
     pip3 install docker-compose awscli ansible==2.9.6
 
+RUN mkdir -p /etc/docker
 RUN bash -c 'echo "{\"experimental\": true}" > /etc/docker/daemon.json'
 
 COPY slacktee /usr/local/bin
